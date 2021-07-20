@@ -49,7 +49,6 @@ void signup(member** head, char ID[], char PW[], char name[])//회원가입
 
 int IDcheck(char check_ID[])//아이디 중복 확인
 {
-    //printf("작동확인\n");
     FILE* check = fopen("C:\\test\\IDPW.txt", "r");
 
     char saveID[40];
@@ -151,7 +150,6 @@ void login(char login_ID[], char login_PW[]) // 로그인
             break;
         }
         else
-            //else if ((strstr(saveIDPW, compare_ID) == NULL) && (strstr(saveIDPW, compare_PW) == NULL))
         {
             printf("잘못된 아이디이거나 틀린 비밀번호입니다.\n");
             printf("처음화면으로 돌아갑니다.\n");
@@ -188,9 +186,37 @@ void logout()// 로그아웃
 }
 
 //void wordquiz(); // 영어단어 맞추기
-void withdrawal()// 회원탈퇴
+void withdrawal(char ID[])// 회원탈퇴
 {
+    int i;
+    member* temp;
+    member* prev = NULL;
 
+    temp = firstmember;
+    if ((strcmp(temp->ID, ID) == 0))
+    {
+        firstmember = temp->next;
+        free(temp);
+
+    }
+    else
+    {
+        for (i = 0; strcmp(temp->ID, ID) != 0; ++i)
+        {
+            temp = temp->next;
+            if (i != 0)
+            {
+                prev = prev->next;
+            }
+            else if (i == 1)
+            {
+                prev = firstmember;
+            }
+        }
+        prev->next = temp->next;
+        free(temp);
+        return;
+    }
 }
 
 void Exit()//종료전에 메로리 해제
@@ -326,7 +352,7 @@ int main()
                 system("cls");
                 continue;
             }
-            withdrawal();
+            withdrawal(login_ID);
             break;
         case 6:
             Exit();
