@@ -73,7 +73,7 @@ int IDcheck(char check_ID[])//아이디 중복 확인
         fscanf(check, "%s %s %s", saveID, savePW, savename);
         saveID[strlen(saveID) + 1] = '\0';
 
-        if(strcmp(saveID, compare_ID) == 0)
+        if (strcmp(saveID, compare_ID) == 0)
         {
             printf("이미 존재하는 아이디 입니다.\n");
             pass++;
@@ -151,7 +151,7 @@ void login(char login_ID[], char login_PW[]) // 로그인
             break;
         }
         else
-        //else if ((strstr(saveIDPW, compare_ID) == NULL) && (strstr(saveIDPW, compare_PW) == NULL))
+            //else if ((strstr(saveIDPW, compare_ID) == NULL) && (strstr(saveIDPW, compare_PW) == NULL))
         {
             printf("잘못된 아이디이거나 틀린 비밀번호입니다.\n");
             printf("처음화면으로 돌아갑니다.\n");
@@ -188,36 +188,37 @@ void logout()// 로그아웃
 }
 
 //void wordquiz(); // 영어단어 맞추기
-//void withdrawal() // 회원탈퇴
-/*{
-    FILE* check = fopen("C:\\test\\IDPW.txt", "t");
-    if (logincheck == false)
-    {
-        printf("로그인 되지 않았습니다. 다시 시도하세요.\n");
-        Sleep(500);
-        system("cls");
-    }
-    else
-    {
+void withdrawal()// 회원탈퇴
+{
 
-    }
+}
 
-    fclose(check);
-}*/
+void Exit()//종료전에 메로리 해제
+{
+    if (firstmember != NULL)
+    {
+        while (firstmember->next != NULL)
+        {
+            member* al = firstmember;
+            firstmember = firstmember->next;
+        }
+        free(firstmember);
+    }
+}
 
 int main()
 {
 
+    int option = 0; //메뉴선택 
+    char input_name[8];
+    char input_ID[10];
+    char input_PW[20];
+
+    char login_ID[10];
+    char login_PW[20];
+
     while (1)
     {
-        int option = 0; //메뉴선택 
-        char input_name[8];
-        char input_ID[10];
-        char input_PW[20];
-
-        char login_ID[10];
-        char login_PW[20];
-
         if (logincheck == true)
         {
             system("cls");
@@ -317,10 +318,18 @@ int main()
         case 4:
             //wordquiz();
             break;
-        case 5: //회원탈퇴
-            //withdrawal();
+        case 5:
+            if (logincheck == false)
+            {
+                printf("로그인 상태가 아닙니다.\n");
+                Sleep(700);
+                system("cls");
+                continue;
+            }
+            withdrawal();
             break;
         case 6:
+            Exit();
             exit(0);
             break;
         default:
